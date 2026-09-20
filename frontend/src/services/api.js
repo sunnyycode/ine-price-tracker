@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let rawBase = (import.meta.env.VITE_API_BASE_URL || '').trim().replace(/\/+$/, '');
+let rawBase = (import.meta.env.VITE_API_BASE_URL || 'https://ine-price-tracker-backend-ieqp.onrender.com').trim().replace(/\/+$/, '');
 const API_BASE_URL = rawBase ? (rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`) : '/api';
 
 const api = axios.create({
