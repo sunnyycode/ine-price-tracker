@@ -1,7 +1,30 @@
 import axios from 'axios';
 
-let rawBase = (import.meta.env.VITE_API_BASE_URL || 'https://ine-price-tracker-backend-ieqp.onrender.com').trim().replace(/\/+$/, '');
-const API_BASE_URL = rawBase ? (rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`) : '/api';
+function getApiBaseUrl() {
+  let url = (import.meta.env.VITE_API_BASE_URL || '').trim();
+
+  // If empty or invalid, fallback to the deployed Render backend
+  if (!url || url === 'undefined' || url === 'null' || url === '/') {
+    url = 'https://ine-price-tracker-backend-ieqp.onrender.com';
+  }
+
+  // If missing protocol, prepend https://
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `https://${url}`;
+  }
+
+  // Strip trailing slashes
+  url = url.replace(/\/+$/, '');
+
+  // Ensure it ends with /api
+  if (!url.endsWith('/api')) {
+    url = `${url}/api`;
+  }
+
+  return url;
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,
