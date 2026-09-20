@@ -19,6 +19,14 @@ app.use(morgan('combined'));
 app.use(express.json());
 
 // Routes
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'INE Price Tracker Backend API is running',
+    timestamp: new Date().toISOString(),
+  });
+});
+app.use('/health', healthRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/tracked-products', trackedProductRoutes);
