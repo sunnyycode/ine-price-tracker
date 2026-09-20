@@ -3,8 +3,16 @@ import axios from 'axios';
 function getApiBaseUrl() {
   let url = (import.meta.env.VITE_API_BASE_URL || '').trim();
 
-  // If empty or invalid, fallback to the deployed Render backend
-  if (!url || url === 'undefined' || url === 'null' || url === '/') {
+  // If empty, placeholder with angle brackets, or invalid, fallback to deployed Render backend
+  if (
+    !url ||
+    url === 'undefined' ||
+    url === 'null' ||
+    url === '/' ||
+    url.includes('<') ||
+    url.includes('>') ||
+    url.includes('YOUR-RENDER')
+  ) {
     url = 'https://ine-price-tracker-backend-ieqp.onrender.com';
   }
 
@@ -19,6 +27,13 @@ function getApiBaseUrl() {
   // Ensure it ends with /api
   if (!url.endsWith('/api')) {
     url = `${url}/api`;
+  }
+
+  // Final sanity check
+  try {
+    new URL(url);
+  } catch {
+    url = 'https://ine-price-tracker-backend-ieqp.onrender.com/api';
   }
 
   return url;
