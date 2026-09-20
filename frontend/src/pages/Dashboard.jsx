@@ -44,7 +44,8 @@ export default function Dashboard() {
         lastScrape,
       });
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to fetch tracked products.');
+      const detail = err.response?.data?.error || err.message || 'Failed to fetch tracked products.';
+      setError(detail);
     } finally {
       setLoading(false);
     }
